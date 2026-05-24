@@ -113,11 +113,4 @@ Example result:
 
 ---
 
-
-
-
-
-
-── charts/
-├── README.md
-└── requirements.txt
+ 
