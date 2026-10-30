@@ -117,7 +117,7 @@ The ETL pipeline exports the following datasets:
 - `Items_Analysis.csv`
 - `olist_analytics.db`
 
-## Key Learning Outcomes
+## Key Outcomes
 
 - Designing an ETL workflow with Python and Pandas.
 - Understanding table granularity and relationships.
