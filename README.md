@@ -36,12 +36,12 @@ The analytical scope is limited to orders with the `delivered` status.
 
 ## Tools and Technologies
 
-- **Python** — data extraction, transformation, cleaning, and validation
-- **Pandas** — data manipulation and aggregation
-- **NumPy** — numerical operations
-- **SQLite** — data storage and SQL analysis
-- **SQL** — analytical queries
-- **Google Colab** — development environment
+- **Python** 
+- **Pandas** 
+- **NumPy** 
+- **SQLite**
+- **SQL** 
+- **Google Colab** 
 
 ## ETL Process
 
