@@ -1,116 +1,131 @@
-# E-Commerce Sales ETL & Analytics Pipeline
+ # E-Commerce Sales: ETL and Data Analytics
 
 ## Project Overview
 
-The goal of this project was to build an end-to-end ETL and analytics pipeline for e-commerce sales data using Python, SQL, and SQLite.
+This project focuses on building an ETL pipeline and preparing e-commerce data for analytical reporting using the Brazilian Olist e-commerce dataset.
 
-The project focused on:
-- data extraction and integration from multiple datasets,
-- data cleaning and validation,
-- feature engineering and analytical dataset creation,
-- loading transformed data into a relational database,
-- performing SQL-based business analysis,
-- creating visualizations to support reporting and decision-making.
+The main objective is to extract, clean, transform, and organize order, product, customer, and payment data into structured analytical tables.
 
-The final analytical dataset was used to analyze revenue trends, customer geography, product categories, and transactional behavior.
+The project also demonstrates data quality validation, data modeling, and SQL-based analysis to support business insights into e-commerce sales and operations.
 
----
+## Business Context
+
+E-commerce datasets contain information at different levels of detail:
+
+- An order can contain multiple products.
+- An order can have multiple payment records.
+- Customer and product information is stored in separate datasets.
+
+Combining these tables without considering their granularity can multiply rows and lead to incorrect financial aggregations.
+
+This project addresses this issue by maintaining separate tables and applying appropriate aggregation methods.
 
 ## Dataset
 
-The project is based on the Brazilian E-Commerce Public Dataset by Olist.
+The project uses the Brazilian Olist public e-commerce dataset.
 
-Main datasets used:
-- orders
-- customers
-- order items
-- payments
-- products
+The following source files are used:
 
----
+- `orders.csv`
+- `order_items.csv`
+- `order_payments.csv`
+- `customers.csv`
+- `products.csv`
 
-## Technologies Used
+The analytical scope is limited to orders with the `delivered` status.
 
-- Python
-- pandas
-- NumPy
-- SQL
-- SQLite
-- SQLAlchemy
-- matplotlib
-- Jupyter Notebook / Google Colab
+## Tools and Technologies
 
----
+- **Python** — data extraction, transformation, cleaning, and validation
+- **Pandas** — data manipulation and aggregation
+- **NumPy** — numerical operations
+- **SQLite** — data storage and SQL analysis
+- **SQL** — analytical queries
+- **Google Colab** — development environment
 
 ## ETL Process
 
-### 1. Extract
+### 1. Data Extraction
 
-Raw CSV files were loaded into Python using pandas.
+Load the source CSV files into Pandas DataFrames.
 
-### 2. Transform
+### 2. Data Cleaning and Transformation
 
-The transformation stage included:
-- checking missing values,
-- checking duplicate records,
-- validating data types,
-- converting date columns,
-- handling missing product information,
-- validating monetary fields,
-- creating new analytical features.
+- Filter delivered orders.
+- Convert date columns to datetime format.
+- Handle missing values.
+- Clean product category information.
+- Convert numerical columns to appropriate data types.
+- Calculate delivery duration and order approval time.
+- Prepare separate analytical tables.
 
-Created features included:
-- delivery time in days,
-- approval time in hours,
-- purchase month,
-- total item value.
+### 3. Data Modeling
 
-### 3. Load
+The project maintains separate tables with clearly defined levels of detail:
 
-The final analytical dataset was loaded into a SQLite database as the `sales_data` table.
+| Table | Level of Detail |
+|---|---|
+| Orders | One row per delivered order |
+| OrderItems | One row per order item |
+| Payments | One row per payment record |
+| Customers | One row per customer ID |
+| Products | One row per product ID |
 
-The SQL load was validated by comparing row counts between the final DataFrame and the database table.
+Additional analytical datasets are prepared:
 
----
+- `Orders_Analysis` — order-level information with aggregated payment and item metrics.
+- `Items_Analysis` — item-level information enriched with product and order attributes.
 
-## Data Quality Checks
+### 4. Data Quality Validation
 
-The project included several data validation steps:
-- missing values analysis,
-- duplicate checks,
-- data type validation,
-- review of delivery time outliers,
-- review of delayed approvals,
-- validation of payment values,
-- validation of product attributes.
+Validation checks include:
 
-Missing delivery-related values were preserved where they reflected valid business states such as canceled, shipped, or undelivered orders.
+- Uniqueness of primary keys.
+- Uniqueness of the composite key (`order_id`, `order_item_id`) in OrderItems.
+- Referential consistency between analytical tables.
+- Reconciliation of payment totals.
+- Validation of aggregation results.
 
----
+Payment reconciliation confirms that the total payment value in the Payments table matches the total after aggregation to the order level.
+
+**Delivered payment total: 15,422,461.77**
+
+The validation also identified one delivered order without a corresponding payment record. This order is retained in the Orders and OrderItems tables without an artificial payment value.
 
 ## SQL Analysis
 
-SQL queries were used to analyze:
-- total revenue,
-- monthly revenue trends,
-- top product categories,
-- revenue by customer state.
+The transformed data is stored in an SQLite database.
 
-Example result:
+The project includes SQL queries for:
 
-- Total revenue: **19,776,160.44**
-- Highest revenue region: **São Paulo (SP)**
-- Top product category: **cama_mesa_banho**
+- Total payment value for delivered orders.
+- Monthly payment trends.
+- Item price and freight value by product category.
+- Payment value by customer state.
+- Distribution of payment methods.
 
----
+## Output Files
 
-## Key Insights
+The ETL pipeline exports the following datasets:
 
-- Revenue increased strongly throughout 2017 and remained high in 2018.
-- Revenue was concentrated in major Brazilian states, especially São Paulo.
-- Home, health, electronics, and lifestyle-related categories generated the highest revenue.
-- The final dataset showed realistic right-skewed transaction values typical for e-commerce data.
+- `Orders.csv`
+- `OrderItems.csv`
+- `Payments.csv`
+- `Customers.csv`
+- `Products.csv`
+- `Orders_Analysis.csv`
+- `Items_Analysis.csv`
+- `olist_analytics.db`
 
----
+## Key Learning Outcomes
 
- 
+- Designing an ETL workflow with Python and Pandas.
+- Understanding table granularity and relationships.
+- Identifying and preventing row multiplication in joins.
+- Validating financial aggregations through reconciliation.
+- Preparing structured datasets for business intelligence reporting.
+- Using SQL to analyze e-commerce sales and payment data.
+
+## Next Step
+
+The prepared tables can be loaded into Power BI to build a relational data model and develop an interactive e-commerce analytics dashboard.
