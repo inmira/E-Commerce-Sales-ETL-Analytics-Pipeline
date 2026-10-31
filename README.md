@@ -129,5 +129,5 @@ The ETL pipeline exports the following datasets:
 ## Next Step
 
 The prepared tables can be loaded into Power BI to build a relational data model and develop an interactive e-commerce analytics dashboard.
-<img width="1159" height="647" alt="image" src="https://github.com/user-attachments/assets/b85f35f5-f36f-4219-b08c-76a8d60e1012" />
+
 
